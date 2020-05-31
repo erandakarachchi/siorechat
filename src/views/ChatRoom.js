@@ -11,7 +11,8 @@ export default class ChatRoom extends Component {
         super(props);
         this.state = {
             usernameSaved :false,
-            allMessages: []
+            allMessages: [],
+            username : "",
         }
         this.usernameRef = React.createRef()
         this.chatMessageRef = React.createRef()
@@ -28,22 +29,34 @@ export default class ChatRoom extends Component {
     }
     sendMessage = () => {
         if (this.chatMessageRef.current.value) {
-            webSocket.emit("message",this.chatMessageRef.current.value)
+            webSocket.emit("received_new_message",
+                {
+                    "user": this.state.username,
+                    "message": this.chatMessageRef.current.value
+                })
         }
     }
 
     componentDidMount() {
-        webSocket.on("new_message", (message) => {
+        webSocket.on("new_message", (messageData) => {
+            console.log("NEW : ", messageData);
             this.setState(prevState => ({
-                allMessages: [...prevState.allMessages, message]
+                allMessages: [...prevState.allMessages, messageData]
             }))
         })
 
-        webSocket.on("username_status", message => {
+        webSocket.on("username_status", userdata => {
             this.usernameRef.current.value = ""
             this.setState({
-                usernameSaved:message
+                usernameSaved:userdata.status
             })
+            if (userdata.status) {
+                this.setState({
+                    username : userdata.username
+                })
+            }
+            console.log(this.state.username);
+            
         })
     }
 
@@ -102,7 +115,7 @@ export default class ChatRoom extends Component {
                     <h2>Chat</h2>
                     <div className="chat-box">
                         {
-                            this.state.allMessages.map((item, i) => <p key={i}>{item}</p>)
+                            this.state.allMessages.map((messageData, i) => <p key={i}>{messageData.user} : {messageData.message}</p>)
                         }
 
                     </div>

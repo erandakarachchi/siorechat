@@ -7,6 +7,7 @@ const port = process.env.port | 4001;
 const index = require("./routes/index")
 
 const app = express()
+
 app.use(index)
 
 const server = http.createServer(app);
@@ -22,14 +23,15 @@ io.on('connection', (socket => {
         if (!usernames.includes(username)) {
             usernames.push(username);
             console.log(usernames)
-            usernameTaken(socket,true);
+            usernameTaken(socket, {"status":true,"username":username});
         } else {
-            usernameTaken(socket,false);
+            usernameTaken(socket,{"status":false,"username":username});
         }
     })
 
-    socket.on("message", (message) => {
-        socket.broadcast.emit("new_message", message);
+    socket.on("received_new_message", (messageData) => {
+        
+        io.sockets.emit("new_message", messageData);
     })
 
     socket.on("disconnect", () => {
@@ -42,8 +44,8 @@ const notifyConnection = socket => {
     socket.emit("connection_success", response);
 }
 
-const usernameTaken = (socket,status) => {
-    socket.emit("username_status", status);
+const usernameTaken = (socket,userdata) => {
+    socket.emit("username_status", userdata);
 }
 
 server.listen(port,()=>console.log(`Server Listing to port ${port}`))
