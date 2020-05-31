@@ -27,7 +27,7 @@ io.on('connection', (socket => {
 
 const getApiAndEmit = socket => {
     const response = new Date();
-    socket.emit("FromAPI", response); 
+    socket.emit("FromAPI2", response); 
 }
 
 server.listen(port,()=>console.log(`Server Listing to port ${port}`))
