@@ -18,15 +18,18 @@ let usernames = []
 io.on('connection', (socket => {
     console.log("New Client Connected", socket.id)
     notifyConnection(socket);
-    socket.on("setusername", (username) => {
+    socket.on("set_username", (username) => {
         if (!usernames.includes(username)) {
             usernames.push(username);
             console.log(usernames)
+            usernameTaken(socket,true);
+        } else {
+            usernameTaken(socket,false);
         }
     })
 
     socket.on("message", (message) => {
-        socket.broadcast.emit("newMessage", message);
+        socket.broadcast.emit("new_message", message);
     })
 
     socket.on("disconnect", () => {
@@ -37,6 +40,10 @@ io.on('connection', (socket => {
 const notifyConnection = socket => {
     const response = "You are connected to the server"
     socket.emit("connection_success", response);
+}
+
+const usernameTaken = (socket,status) => {
+    socket.emit("username_status", status);
 }
 
 server.listen(port,()=>console.log(`Server Listing to port ${port}`))
