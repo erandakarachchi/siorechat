@@ -1,18 +1,16 @@
 import socketIOClient from "socket.io-client";
 
+//This acts as middleware for all store actions.
 const socketMiddleware = () => {
     console.log("MIDDDLEWARE")
-  let socket = null;
+  let webSocket = null;
   // the middleware part of this function
   return store => next => action => {
     switch (action.type) {
-      case 'WS_CONNECT':
-        if (socket !== null) {
-          socket.close();
-        }
-        // connect to the remote host
-        socket =socketIOClient(action.host);
-        console.log('SCOEKT CALLED',socket)
+        case 'WS_CONNECT':
+            webSocket = socketIOClient(action.host);
+        case "SEND_MESSAGE":
+            webSocket.emit("received_new_message",action.payload)
       default:
         console.log('the next action:', action);
         return next(action);

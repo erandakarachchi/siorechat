@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import socketIOClient from "socket.io-client";
 import { Button, InputGroup, FormControl } from 'react-bootstrap'
 
-import webSocketConnect from "./../actions/connectSocket"
+import {webSocketConnect,sendNewMessage} from "./../actions/socketActions"
 import { connect } from 'react-redux';
 
 const ENDPOINT = "http://127.0.0.1:4001";
@@ -17,6 +17,7 @@ class ChatRoom extends Component {
             allMessages: [],
             username: "",
         }
+        this.dispatch = this.props.dispatch
         this.usernameRef = React.createRef()
         this.chatMessageRef = React.createRef()
         this.saveUsername = this.saveUsername.bind(this);
@@ -32,19 +33,23 @@ class ChatRoom extends Component {
     }
     sendMessage = () => {
         if (this.chatMessageRef.current.value) {
-            webSocket.emit("received_new_message",
+            this.dispatch(sendNewMessage(
                 {
                     "user": this.state.username,
                     "message": this.chatMessageRef.current.value
-                })
+                }
+            ))
+            // webSocket.emit("received_new_message",
+            //     {
+            //         "user": this.state.username,
+            //         "message": this.chatMessageRef.current.value
+            //     })
             this.chatMessageRef.current.value = ""
         }
     }
 
     componentDidMount() {
-        const { dispatch } = this.props;
-        dispatch(webSocketConnect(ENDPOINT));
-        console.log("DASDAS", dispatch);
+        this.dispatch(webSocketConnect(ENDPOINT));
         webSocket.on("new_message", (messageData) => {
             console.log("NEW : ", messageData);
             this.setState(prevState => ({
@@ -115,7 +120,7 @@ class ChatRoom extends Component {
                     <h2>Chat</h2>
                     <div className="chat-box">
                         {
-                            this.state.allMessages.map((messageData, i) => <p key={i}>{messageData.user} : {messageData.message}</p>)
+                            // this.state.allMessages.map((messageData, i) => <p key={i}>{messageData.user} : {messageData.message}</p>)
                         }
                     </div>
                 </div>
