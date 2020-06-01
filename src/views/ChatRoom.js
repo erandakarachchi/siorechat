@@ -10,9 +10,9 @@ export default class ChatRoom extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            usernameSaved :false,
+            usernameSaved: false,
             allMessages: [],
-            username : "",
+            username: "",
         }
         this.usernameRef = React.createRef()
         this.chatMessageRef = React.createRef()
@@ -34,6 +34,7 @@ export default class ChatRoom extends Component {
                     "user": this.state.username,
                     "message": this.chatMessageRef.current.value
                 })
+            this.chatMessageRef.current.value = ""
         }
     }
 
@@ -48,58 +49,69 @@ export default class ChatRoom extends Component {
         webSocket.on("username_status", userdata => {
             this.usernameRef.current.value = ""
             this.setState({
-                usernameSaved:userdata.status
+                usernameSaved: userdata.status
             })
             if (userdata.status) {
                 this.setState({
-                    username : userdata.username
+                    username: userdata.username
                 })
             }
             console.log(this.state.username);
-            
+
         })
     }
 
     showUsernameForm = () => {
         return (
             <div className="chat-controll-container">
-            <div>
-                <InputGroup className="mb-3">
-                    <InputGroup.Prepend>
-                        <InputGroup.Text id="basic-addon1">Username</InputGroup.Text>
-                    </InputGroup.Prepend>
-                    <FormControl
-                        ref={this.usernameRef}
-                        placeholder="Enter username"
-                        aria-label="Username"
-                        aria-describedby="basic-addon1"
-                    />
-                </InputGroup>
-            </div>
-            <div>
-                <Button className="chat-button" onClick={this.saveUsername}>Save Username</Button>
-            </div>
-        </div>
-        )
-    }
-    showChatForm = () => {
-        return (
-            <div className="chat-controll-container">
                 <div>
                     <InputGroup className="mb-3">
                         <InputGroup.Prepend>
-                            <InputGroup.Text id="basic-addon1">Message</InputGroup.Text>
+                            <InputGroup.Text id="basic-addon1">Username</InputGroup.Text>
                         </InputGroup.Prepend>
                         <FormControl
-                            ref={this.chatMessageRef}
-                            placeholder="Enter message "
+                            ref={this.usernameRef}
+                            placeholder="Enter username"
                             aria-label="Username"
                             aria-describedby="basic-addon1"
                         />
                     </InputGroup>
                 </div>
                 <div>
-                    <Button className="chat-button" onClick={this.sendMessage}>Chat</Button>
+                    <Button className="chat-button" onClick={this.saveUsername}>Save Username</Button>
+                </div>
+            </div>
+        )
+    }
+    showChatForm = () => {
+        return (
+            <div>
+                <div className="chat-controll-container">
+                    <div>
+                        <InputGroup className="mb-3">
+                            <InputGroup.Prepend>
+                                <InputGroup.Text id="basic-addon1">Message</InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <FormControl
+                                ref={this.chatMessageRef}
+                                placeholder="Enter message "
+                                aria-label="Username"
+                                aria-describedby="basic-addon1"
+                            />
+                        </InputGroup>
+                    </div>
+                    <div>
+                        <Button className="chat-button" onClick={this.sendMessage}>Chat</Button>
+                    </div>
+                </div>
+                <div>
+                    <hr/>
+                    <h2>Chat</h2>
+                    <div className="chat-box">
+                        {
+                            this.state.allMessages.map((messageData, i) => <p key={i}>{messageData.user} : {messageData.message}</p>)
+                        }
+                    </div>
                 </div>
             </div>
         );
@@ -109,17 +121,9 @@ export default class ChatRoom extends Component {
         return (
             <div className="chat-container">
                 {
-                    (!this.state.usernameSaved)?this.showUsernameForm():this.showChatForm()
+                    (!this.state.usernameSaved) ? this.showUsernameForm() : this.showChatForm()
                 }
-                <div>
-                    <h2>Chat</h2>
-                    <div className="chat-box">
-                        {
-                            this.state.allMessages.map((messageData, i) => <p key={i}>{messageData.user} : {messageData.message}</p>)
-                        }
 
-                    </div>
-                </div>
             </div>
         )
     }

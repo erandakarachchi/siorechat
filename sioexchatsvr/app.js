@@ -30,7 +30,6 @@ io.on('connection', (socket => {
     })
 
     socket.on("received_new_message", (messageData) => {
-        
         io.sockets.emit("new_message", messageData);
     })
 
