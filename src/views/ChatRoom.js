@@ -2,10 +2,13 @@ import React, { Component } from 'react'
 import socketIOClient from "socket.io-client";
 import { Button, InputGroup, FormControl } from 'react-bootstrap'
 
+import webSocketConnect from "./../actions/connectSocket"
+import { connect } from 'react-redux';
+
 const ENDPOINT = "http://127.0.0.1:4001";
 const webSocket = socketIOClient(ENDPOINT);
 
-export default class ChatRoom extends Component {
+class ChatRoom extends Component {
 
     constructor(props) {
         super(props);
@@ -39,6 +42,9 @@ export default class ChatRoom extends Component {
     }
 
     componentDidMount() {
+        const { dispatch } = this.props;
+        dispatch(webSocketConnect(ENDPOINT));
+        console.log("DASDAS", dispatch);
         webSocket.on("new_message", (messageData) => {
             console.log("NEW : ", messageData);
             this.setState(prevState => ({
@@ -127,4 +133,11 @@ export default class ChatRoom extends Component {
             </div>
         )
     }
+   
 }
+function mapStateToProps(state) {
+    return {
+        todos: state.todos
+    };
+  }
+export default connect(mapStateToProps)(ChatRoom);
