@@ -2,6 +2,14 @@ import socketIOClient from "socket.io-client";
 import {receiveNewMessage,updateChatRoomState} from "./../actions/socketActions"
 
 //This acts as middleware for all store actions.
+
+/*
+TODO:
+[]get the state in joinedChatRoom and display it in the page
+[]make chat and chat room.
+*/
+
+
 const socketMiddleware = () => {
     console.log("MIDDDLEWARE INITIALIZED")
   let webSocket = null;
