@@ -9,11 +9,28 @@ input[type=text] {
     min-width: 100px;
   }
 
+.parent-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
 .chat-container{
     background-color: #e5e5e5;
     display: flex;
     flex-direction: column;
-    margin: 20px 800px;
+    margin: 20px 500px;
+    padding: 20px;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.chat-room-container{
+    background-color: #e5e5e5;
+    display: flex;
+    flex-direction: column;
+    margin: 20px 500px;
     padding: 20px;
     justify-content: space-between;
     align-items: stretch;

@@ -21,3 +21,10 @@ export const saveNewUser = user => {
         payload:user
     }
 }
+
+export const joinChatRoom = room => {
+    return {
+        type: "NEW_CHAT_ROOM",
+        payload:room
+    }
+}

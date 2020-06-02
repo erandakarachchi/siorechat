@@ -25,7 +25,10 @@ io.on('connection', (socket => {
     socket.on("onNewUserConnect", (user) => {
         console.log("NEW USER CONNECTED", user);
     })
-
+    socket.on("joinChatRoom", room => {
+        console.log("JOIN CHAT ROOM ", room);
+        socket.join(room);
+    })
     socket.on("disconnect", () => {
         console.log("Client Disconnected");
     })
