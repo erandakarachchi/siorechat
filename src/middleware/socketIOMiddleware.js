@@ -22,6 +22,9 @@ const socketMiddleware = () => {
       case "NEW_USER":
         webSocket.emit("onNewUserConnect", action.payload);
         break;
+      case "NEW_CHAT_ROOM":
+        webSocket.emit("joinChatRoom", action.payload);
+        break;
     }  
     return next(action);
   };

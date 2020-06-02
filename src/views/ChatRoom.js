@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
-import socketIOClient from "socket.io-client";
 import { Button, InputGroup, FormControl } from 'react-bootstrap'
-
 import {webSocketConnect,sendNewMessage,saveNewUser} from "./../actions/socketActions"
 import { connect } from 'react-redux';
 
-const ENDPOINT = "http://127.0.0.1:4001";
-const webSocket = socketIOClient(ENDPOINT);
 
 class ChatRoom extends Component {
 
@@ -31,8 +27,8 @@ class ChatRoom extends Component {
                 "user": this.usernameRef.current.value
             }));
         }
-
     }
+    
     sendMessage = () => {
         console.log('Message dispatched')
         if (this.chatMessageRef.current.value) {
@@ -42,31 +38,12 @@ class ChatRoom extends Component {
                     "message": this.chatMessageRef.current.value
                 }
             ))
-            // webSocket.emit("received_new_message",
-            //     {
-            //         "user": this.state.username,
-            //         "message": this.chatMessageRef.current.value
-            //     })
             this.chatMessageRef.current.value = ""
         }
     }
 
     componentDidMount() {
         this.dispatch(webSocketConnect(ENDPOINT));
-
-        webSocket.on("username_status", userdata => {
-            this.usernameRef.current.value = ""
-            this.setState({
-                usernameSaved: userdata.status
-            })
-            if (userdata.status) {
-                this.setState({
-                    username: userdata.username
-                })
-            }
-            console.log(this.state.username);
-
-        })
     }
 
     showUsernameForm = () => {
