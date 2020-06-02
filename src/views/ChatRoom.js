@@ -28,7 +28,6 @@ class ChatRoom extends Component {
             }));
         }
     }
-
     sendMessage = () => {
         console.log('Message dispatched')
         if (this.chatMessageRef.current.value) {
