@@ -19,15 +19,7 @@ let usernames = []
 io.on('connection', (socket => {
     console.log("New Client Connected", socket.id)
     notifyConnection(socket);
-    socket.on("set_username", (username) => {
-        if (!usernames.includes(username)) {
-            usernames.push(username);
-            console.log(usernames)
-            usernameTaken(socket, {"status":true,"username":username});
-        } else {
-            usernameTaken(socket,{"status":false,"username":username});
-        }
-    })
+
 
     socket.on("received_new_message", (messageData) => {
         console.log(messageData)
