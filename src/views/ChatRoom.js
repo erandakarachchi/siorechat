@@ -40,11 +40,9 @@ class ChatRoom extends Component {
             this.chatMessageRef.current.value = ""
         }
     }
-
     componentDidMount() {
         // this.dispatch(webSocketConnect(ENDPOINT));
     }
-
     showUsernameForm = () => {
         return (
             <div className="chat-controll-container">

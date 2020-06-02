@@ -9,19 +9,18 @@ class ChatDashboard extends Component {
     constructor(props) {
         super(props)
         this.state = {
-
+            
         }
         this.dispatch = this.props.dispatch;
         this.chatRoomRef = React.createRef()
-        this.saveChatRoom = this.saveChatRoom.bind(this);
+        this.saveChatRoom = this.joinToChatRoom.bind(this);
     }
     componentDidMount() {
         this.dispatch(webSocketConnect(ENDPOINT));
     }
 
-    saveChatRoom = () => {
+    joinToChatRoom = () => {
         if (this.chatRoomRef.current.value) {
-            //TODO: save chat room
             this.dispatch(joinChatRoom(this.chatRoomRef.current.value))
         }
         this.chatRoomRef.current.value = "";
@@ -44,7 +43,7 @@ class ChatDashboard extends Component {
                     </InputGroup>
                 </div>
                 <div>
-                    <Button className="chat-button" onClick={this.saveChatRoom}>Enter Chat Room</Button>
+                    <Button className="chat-button" onClick={this.joinToChatRoom}>Enter Chat Room</Button>
                 </div>
             </div>
         )

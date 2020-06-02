@@ -28,3 +28,10 @@ export const joinChatRoom = room => {
         payload:room
     }
 }
+
+export const updateChatRoomState = room => {
+    return {
+        type: "SAVE_CHAT_ROOM",
+        payload:room,
+    }
+}
