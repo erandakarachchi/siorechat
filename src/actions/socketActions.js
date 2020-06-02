@@ -14,3 +14,10 @@ export const receiveNewMessage = messageData => {
         payload:messageData
     }
 }
+
+export const saveNewUser = user => {
+    return {
+        type: "NEW_USER",
+        payload:user
+    }
+}

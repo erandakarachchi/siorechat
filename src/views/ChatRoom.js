@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import socketIOClient from "socket.io-client";
 import { Button, InputGroup, FormControl } from 'react-bootstrap'
 
-import {webSocketConnect,sendNewMessage} from "./../actions/socketActions"
+import {webSocketConnect,sendNewMessage,saveNewUser} from "./../actions/socketActions"
 import { connect } from 'react-redux';
 
 const ENDPOINT = "http://127.0.0.1:4001";
@@ -27,11 +27,14 @@ class ChatRoom extends Component {
     }
     saveUsername = () => {
         if (this.usernameRef.current.value) {
-            webSocket.emit("set_username", this.usernameRef.current.value);
+            this.dispatch(saveNewUser({
+                "user": this.usernameRef.current.value
+            }));
         }
 
     }
     sendMessage = () => {
+        console.log('Message dispatched')
         if (this.chatMessageRef.current.value) {
             this.dispatch(sendNewMessage(
                 {
@@ -50,12 +53,6 @@ class ChatRoom extends Component {
 
     componentDidMount() {
         this.dispatch(webSocketConnect(ENDPOINT));
-        webSocket.on("new_message", (messageData) => {
-            console.log("NEW : ", messageData);
-            this.setState(prevState => ({
-                allMessages: [...prevState.allMessages, messageData]
-            }))
-        })
 
         webSocket.on("username_status", userdata => {
             this.usernameRef.current.value = ""
@@ -132,9 +129,11 @@ class ChatRoom extends Component {
         return (
             <div className="chat-container">
                 {
-                    (!this.state.usernameSaved) ? this.showUsernameForm() : this.showChatForm()
+                    this.showUsernameForm()
                 }
-
+                {
+                    this.showChatForm()
+                }
             </div>
         )
     }

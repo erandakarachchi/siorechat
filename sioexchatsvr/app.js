@@ -18,12 +18,12 @@ let usernames = []
 
 io.on('connection', (socket => {
     console.log("New Client Connected", socket.id)
-    notifyConnection(socket);
-
-
-    socket.on("received_new_message", (messageData) => {
+    socket.on("onSendMessage", (messageData) => {
         console.log(messageData)
-        io.sockets.emit("new_message", messageData);
+        io.sockets.emit("onNewMessage", messageData);
+    })
+    socket.on("onNewUserConnect", (user) => {
+        console.log("NEW USER CONNECTED", user);
     })
 
     socket.on("disconnect", () => {
@@ -31,10 +31,6 @@ io.on('connection', (socket => {
     })
 }))
 
-const notifyConnection = socket => {
-    const response = "You are connected to the server"
-    socket.emit("connection_success", response);
-}
 
 const usernameTaken = (socket,userdata) => {
     socket.emit("username_status", userdata);
