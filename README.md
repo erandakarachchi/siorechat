@@ -1,14 +1,33 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# ChatZ
+
+Simple real-time chat application using react JS, redux node express and socket IO.
 
 ## Created Using 
+
 `create-react-app`
+
+### Demo
+
+Following demo shows the conversation between `John` and `jane` who are connected to private room known as `abc123`
+
+![captured](assets/captured.gif)
 
 ### Running project
 
-Running Socket.io server 
+Running the socket.io server
 
-`node app.js`
+```shell
+cd siochatclient\sioexchatsvr
 
-Running react app
+node app.js
+```
 
-`npm start`
+Running react project
+
+```shell
+cd siochatclient
+
+npm start	
+```
+
+### 
