@@ -30,11 +30,10 @@ class ChatRoom extends Component {
         }
     }
     sendMessage = () => {
-        console.log('Message dispatched')
         if (this.chatMessageRef.current.value) {
             this.dispatch(sendNewMessage(
                 {
-                    "user": this.state.username,
+                    "user": this.props.newState.chatRoom.username,
                     "message": this.chatMessageRef.current.value
                 }
             ))
@@ -92,7 +91,7 @@ class ChatRoom extends Component {
                     <h2>Chat</h2>
                     <div className="chat-box">
                         {
-                            // this.state.allMessages.map((messageData, i) => <p key={i}>{messageData.user} : {messageData.message}</p>)
+                             this.props.newState.chatRoom.messages.map((messageData, i) => <p key={i}>{messageData.user} : {messageData.message}</p>)
                         }
                     </div>
                 </div>
@@ -107,17 +106,14 @@ class ChatRoom extends Component {
     }
 
     render() {
-        console.log(this.props.match.params.chatRoom)
+        console.log("CHAT ROOM PROPS :",this.props.newState.chatRoom)
         return (
             <div className="chat-container">
                 {
                     (this.props.match.params.chatRoom)?this.showAlert(this.props.match.params.chatRoom):""
                 }
                 {
-                    this.showUsernameForm()
-                }
-                {
-                    this.showChatForm()
+                    (!this.props.newState.chatRoom.username)?this.showUsernameForm():this.showChatForm()
                 }
             </div>
         )
@@ -126,7 +122,7 @@ class ChatRoom extends Component {
 }
 function mapStateToProps(state) {
     return {
-        todos: state.todos
+       newState:state
     };
 }
 export default connect(mapStateToProps)(ChatRoom);

@@ -24,7 +24,6 @@ const socketMiddleware = () => {
           store.dispatch(receiveNewMessage(messageData))
         })
         webSocket.on("joinedChatRoom", room => { 
-          console.log("Joined to chat room", room);
           store.dispatch(updateChatRoomState(room));
         })
         webSocket.on("onNewUserConnectSuccess", username => {

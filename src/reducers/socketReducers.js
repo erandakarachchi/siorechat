@@ -1,4 +1,4 @@
-export const chatRoomReducer = (oldState = { "chatRoomName": "", "username": "" }, action) => {
+export const chatRoomReducer = (oldState = { "chatRoomName": "", "username": "","messages":[] }, action) => {
     /*
         Never mutate args from the reducer.  this will cause effects such as component will not re-render.
     */
@@ -10,6 +10,10 @@ export const chatRoomReducer = (oldState = { "chatRoomName": "", "username": "" 
             break;
         case "SAVE_USERNAME":
             state.username = action.payload;
+            break;
+        case "MESSAGE_RECIEVED":
+            console.log(action.payload);
+            state.messages = [...state.messages,action.payload]
             break;
         default:
             break;

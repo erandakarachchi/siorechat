@@ -8,7 +8,6 @@ export const sendNewMessage = messageData => {
 }
 
 export const receiveNewMessage = messageData => {
-    console.log("MESSAGE RECIEVED : ", messageData);
     return {
         type: "MESSAGE_RECIEVED",
         payload:messageData
