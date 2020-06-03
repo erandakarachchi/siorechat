@@ -11,6 +11,8 @@ app.use(index)
 const server = http.createServer(app);
 const io = socketIO(server);
 
+let currentUsers = [];
+
 io.on('connection', (socket => {
     console.log("New Client Connected", socket.id)
     socket.on("onSendMessage", (messageData) => {
@@ -18,6 +20,10 @@ io.on('connection', (socket => {
     })
     socket.on("onNewUserConnect", (user) => {
         console.log("NEW USER CONNECTED", user);
+        if (!currentUsers.includes(user.user)) {
+            currentUsers.push(user.user);
+            socket.emit("onNewUserConnectSuccess", user.user);
+        }
     })
     socket.on("joinChatRoom", room => {
         socket.join(room, () => {

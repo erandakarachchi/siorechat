@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Button, InputGroup, FormControl } from 'react-bootstrap'
+import { Button, InputGroup, FormControl} from 'react-bootstrap'
 import { connect } from 'react-redux';
-import{webSocketConnect,joinChatRoom} from "./../actions/socketActions"
+import { webSocketConnect, joinChatRoom } from "./../actions/socketActions"
+import {Redirect } from "react-router-dom"
 
 const ENDPOINT = "http://127.0.0.1:4001";
 
@@ -9,13 +10,16 @@ class ChatDashboard extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            
+
         }
         this.dispatch = this.props.dispatch;
         this.chatRoomRef = React.createRef()
         this.saveChatRoom = this.joinToChatRoom.bind(this);
+        this.renderChatRoom = this.renderChatRoom.bind(this);
+        this.renderAlert = this.renderAlert.bind(this);
     }
     componentDidMount() {
+        console.log("COMPONENT MOUNTED")
         this.dispatch(webSocketConnect(ENDPOINT));
     }
 
@@ -26,9 +30,9 @@ class ChatDashboard extends Component {
         this.chatRoomRef.current.value = "";
     }
 
-    render() {
+    renderChatRoom = () => {
         return (
-            <div className="chat-room-container">
+            <div>
                 <div >
                     <InputGroup className="mb-3">
                         <InputGroup.Prepend>
@@ -48,10 +52,28 @@ class ChatDashboard extends Component {
             </div>
         )
     }
+
+    renderAlert = (chatRoomName) => {
+        return (
+            <Redirect to={`/chat/${chatRoomName}`}/>
+        )
+    }
+
+    render() {
+        console.log('PROPS CHAT ROOM ', this.props.chatData.chatRoom);
+        return (
+            <div className="chat-room-container">
+                {
+                    (!this.props.chatData.chatRoom.chatRoomName) ? this.renderChatRoom() : this.renderAlert(this.props.chatData.chatRoom.chatRoomName)
+                }
+            </div>
+        )
+    }
 }
 
 function mapStateToProps(state) {
-    return state;
+    console.log("MAP STATE TO PROPS : ", state);
+    return { chatData: state };
 }
 
 export default connect(mapStateToProps)(ChatDashboard);

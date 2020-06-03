@@ -1,5 +1,5 @@
 import socketIOClient from "socket.io-client";
-import {receiveNewMessage,updateChatRoomState} from "./../actions/socketActions"
+import {receiveNewMessage,updateChatRoomState,saveUsername} from "./../actions/socketActions"
 
 //This acts as middleware for all store actions.
 
@@ -24,9 +24,12 @@ const socketMiddleware = () => {
           store.dispatch(receiveNewMessage(messageData))
         })
         webSocket.on("joinedChatRoom", room => { 
-          console.log("callback",room)
+          console.log("Joined to chat room", room);
           store.dispatch(updateChatRoomState(room));
-      })
+        })
+        webSocket.on("onNewUserConnectSuccess", username => {
+          store.dispatch(saveUsername(username));
+        })
         break;
       case "SEND_MESSAGE":
         webSocket.emit("onSendMessage", action.payload)

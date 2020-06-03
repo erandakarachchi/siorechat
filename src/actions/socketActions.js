@@ -35,3 +35,10 @@ export const updateChatRoomState = room => {
         payload:room,
     }
 }
+
+export const saveUsername = username => {
+    return {
+        type: "SAVE_USERNAME",
+        payload:username
+    }
+}

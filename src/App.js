@@ -12,7 +12,7 @@ export class App extends React.Component {
         <div className="parent-container">
           <Switch>
             <Route exact path="/" component={ChatDashboard} />
-            <Route path="/chat" component={ChatRoom} />
+            <Route path="/chat/:chatRoom" component={ChatRoom} />
           </Switch>
         </div>
       </Router>

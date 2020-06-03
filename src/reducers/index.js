@@ -4,7 +4,7 @@ import { chatRoomReducer} from "./socketReducers"
 
 const rootReducer = combineReducers({
     joinChat: joinChatReducer,
-    chatReducer:chatRoomReducer
+    chatRoom:chatRoomReducer
 })
 
 export default rootReducer;

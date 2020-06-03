@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Button, InputGroup, FormControl } from 'react-bootstrap'
-import {webSocketConnect,sendNewMessage,saveNewUser} from "./../actions/socketActions"
+import { Button, InputGroup, FormControl, Alert } from 'react-bootstrap'
+import { sendNewMessage, saveNewUser } from "./../actions/socketActions"
 import { connect } from 'react-redux';
 
 
@@ -20,6 +20,7 @@ class ChatRoom extends Component {
         this.sendMessage = this.sendMessage.bind(this);
         this.showChatForm = this.showChatForm.bind(this);
         this.showUsernameForm = this.showUsernameForm.bind(this);
+        this.showAlert = this.showAlert.bind(this);
     }
     saveUsername = () => {
         if (this.usernameRef.current.value) {
@@ -87,7 +88,7 @@ class ChatRoom extends Component {
                     </div>
                 </div>
                 <div>
-                    <hr/>
+                    <hr />
                     <h2>Chat</h2>
                     <div className="chat-box">
                         {
@@ -98,10 +99,20 @@ class ChatRoom extends Component {
             </div>
         );
     }
+    showAlert = (chatRoomName) => {
+        return (
+            <Alert variant={"success"}>
+                Successfully connected to {chatRoomName}
+            </Alert>)
+    }
 
     render() {
+        console.log(this.props.match.params.chatRoom)
         return (
             <div className="chat-container">
+                {
+                    (this.props.match.params.chatRoom)?this.showAlert(this.props.match.params.chatRoom):""
+                }
                 {
                     this.showUsernameForm()
                 }
@@ -111,11 +122,11 @@ class ChatRoom extends Component {
             </div>
         )
     }
-   
+
 }
 function mapStateToProps(state) {
     return {
         todos: state.todos
     };
-  }
+}
 export default connect(mapStateToProps)(ChatRoom);
