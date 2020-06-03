@@ -34,7 +34,8 @@ class ChatRoom extends Component {
             this.dispatch(sendNewMessage(
                 {
                     "user": this.props.newState.chatRoom.username,
-                    "message": this.chatMessageRef.current.value
+                    "message": this.chatMessageRef.current.value,
+                    "chatRoom":this.props.match.params.chatRoom
                 }
             ))
             this.chatMessageRef.current.value = ""
@@ -106,7 +107,6 @@ class ChatRoom extends Component {
     }
 
     render() {
-        console.log("CHAT ROOM PROPS :",this.props.newState.chatRoom)
         return (
             <div className="chat-container">
                 {

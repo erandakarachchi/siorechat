@@ -14,12 +14,10 @@ const io = socketIO(server);
 let currentUsers = [];
 
 io.on('connection', (socket => {
-    console.log("New Client Connected", socket.id)
     socket.on("onSendMessage", (messageData) => {
-        io.sockets.emit("onNewMessage", messageData);
+        io.in(messageData.chatRoom).emit('onNewMessage', messageData);
     })
     socket.on("onNewUserConnect", (user) => {
-        console.log("NEW USER CONNECTED", user);
         if (!currentUsers.includes(user.user)) {
             currentUsers.push(user.user);
             socket.emit("onNewUserConnectSuccess", user.user);
@@ -27,7 +25,6 @@ io.on('connection', (socket => {
     })
     socket.on("joinChatRoom", room => {
         socket.join(room, () => {
-            console.log("EMMITTTING")
             socket.emit("joinedChatRoom", room);
         });
     })

@@ -8,10 +8,7 @@ TODO:
 []get the state in joinedChatRoom and display it in the page
 []make chat and chat room.
 */
-
-
 const socketMiddleware = () => {
-    console.log("MIDDDLEWARE INITIALIZED")
   let webSocket = null;
   // the middleware part of this function
   return store => next => action => {

@@ -19,7 +19,6 @@ class ChatDashboard extends Component {
         this.renderAlert = this.renderAlert.bind(this);
     }
     componentDidMount() {
-        console.log("COMPONENT MOUNTED")
         this.dispatch(webSocketConnect(ENDPOINT));
     }
 
@@ -60,7 +59,6 @@ class ChatDashboard extends Component {
     }
 
     render() {
-        console.log('PROPS CHAT ROOM ', this.props.chatData.chatRoom);
         return (
             <div className="chat-room-container">
                 {
@@ -72,7 +70,6 @@ class ChatDashboard extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log("MAP STATE TO PROPS : ", state);
     return { chatData: state };
 }
 

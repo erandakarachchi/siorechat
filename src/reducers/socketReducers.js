@@ -12,12 +12,10 @@ export const chatRoomReducer = (oldState = { "chatRoomName": "", "username": "",
             state.username = action.payload;
             break;
         case "MESSAGE_RECIEVED":
-            console.log(action.payload);
             state.messages = [...state.messages,action.payload]
             break;
         default:
             break;
     }
-    console.log("RETURN STATE : ", state);
     return state;
 }
