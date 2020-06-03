@@ -8,6 +8,12 @@ TODO:
 []get the state in joinedChatRoom and display it in the page
 []make chat and chat room.
 */
+
+const emitSocketEvents = (socket, event, data) => {
+  if (socket) {
+    socket.emit(event,data)
+  }
+}
 const socketMiddleware = () => {
   let webSocket = null;
   // the middleware part of this function
@@ -28,13 +34,13 @@ const socketMiddleware = () => {
         })
         break;
       case "SEND_MESSAGE":
-        webSocket.emit("onSendMessage", action.payload)
+        emitSocketEvents(webSocket, "onSendMessage", action.payload);
         break;
       case "NEW_USER":
-        webSocket.emit("onNewUserConnect", action.payload);
+        emitSocketEvents(webSocket,"onNewUserConnect",action.payload)
         break;
       case "NEW_CHAT_ROOM":
-        webSocket.emit("joinChatRoom", action.payload);
+        emitSocketEvents(webSocket, "joinChatRoom", action.payload);
         break;
     }  
     return next(action);
